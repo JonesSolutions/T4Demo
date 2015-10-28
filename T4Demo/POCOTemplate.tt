@@ -1,0 +1,87 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ parameter name="POCO" type="T4Demo.POCO" #>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace T4Demo
+{
+    class <#= this.POCO.ClassName #>
+    {
+		<# foreach (T4Demo.POCO.Property current in this.POCO.Properties )
+		{ 
+			switch (current.PropertyType)
+			{
+				case "bigint": #> 
+				protected Int64 <#= current.PropertyName #>;<#	break;
+				case "binary": #>
+				protected byte[] <#= current.PropertyName #>;<#	break;
+				case "bit": #>
+				protected boolean <#= current.PropertyName #>;<#	break;
+				case "char": #>
+				protected char[]  <#= current.PropertyName #>;<#	break;
+				case "date": #>
+				protected DateTime <#= current.PropertyName #>;<#	break;
+				case "datetime": #>
+				protected DateTime <#= current.PropertyName #>;<#	break;
+				case "datetime2": #>
+				protected DateTime <#= current.PropertyName #>;<#	break;
+				case "DATETIMEOFFSET": #>
+				protected DateTimeOffset <#= current.PropertyName #>;<#	break;
+				case "decimal": #>
+				protected decimal <#= current.PropertyName #>;<#	break;
+				case "float": #>
+				protected double <#= current.PropertyName #>;<#	break;
+				case "int": #>
+				protected int32 <#= current.PropertyName #>;<#	break;
+				case "money": #>
+				protected decimal  <#= current.PropertyName #>;	<#	break;
+				case "nchar": #>
+				protected chars[] <#= current.PropertyName #>;<#	break;
+				case "ntext": #>
+				protected string  <#= current.PropertyName #>;<#	break;
+				case "numeric": #>
+				protected decimal <#= current.PropertyName #>;<#	break;
+				case "nvarchar": #>
+				protected string  <#= current.PropertyName #>;<#	break;
+				case "nvarchar(1)": #>
+				protected char  <#= current.PropertyName #>;<#	break;
+				case "nchar(1)": #>
+				protected Char <#= current.PropertyName #>;<#	break;
+				case "real": #>
+				protected single <#= current.PropertyName #>;<#	break;
+				case "smallint": #>
+				protected int16 <#= current.PropertyName #>;<#	break;
+				case "smallmoney": #>
+				protected decimal <#= current.PropertyName #>;<#	break;
+				case "text": #>
+				protected string <#= current.PropertyName #>;<#	break;
+				case "time": #>
+				protected TimeSpan <#= current.PropertyName #>;<#	break;
+				case "tinyint": #>
+				protected byte <#= current.PropertyName #>;<#	break;
+				case "uniqueidentifier": #>
+				protected Guid <#= current.PropertyName #>;<#	break;
+				case "varbinary": #>
+				protected byte[] <#= current.PropertyName #>;<#	break;
+				case "varbinary(1)": #>
+				protected byte  <#= current.PropertyName #>;<#	break;
+				case "binary(1)": #>
+				protected byte <#= current.PropertyName #>;<#	break;
+				case "varchar": #>
+				protected string <#= current.PropertyName #>;<#	break;
+				case "xml": #>
+				protected string  <#= current.PropertyName #>;<#	break;
+				default: #>
+				protected object  <#= current.PropertyName #>;<#	break; 
+			}
+		}#>	
+	}
+}
