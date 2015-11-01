@@ -32,7 +32,8 @@ namespace T4Demo
             sqlString = "Select " +
                         "     clmns.name PropertyName, " +
                         "     baset.name PropertyType, " +
-                        "     tbl.Name    ClassName " +
+                        "     tbl.Name    ClassName, " +
+                        "     clmns.is_nullable Nullable " +
                         "FROM " +
                         "     sys.tables AS tbl " +
                         "INNER JOIN sys.all_columns AS clmns " +
@@ -62,6 +63,7 @@ namespace T4Demo
                 POCO.Property myProperty = new POCO.Property();
                 myProperty.PropertyName = row["PropertyName"].ToString();
                 myProperty.PropertyType = row["PropertyType"].ToString();
+                myProperty.Nullable = Convert.ToBoolean(row["Nullable"]);
                 myProperties.Add(myProperty);
             }
             myPOCO.Properties = myProperties;
@@ -70,10 +72,11 @@ namespace T4Demo
             POCOTemplate.Session = new Dictionary<string, object>();
             POCOTemplate.Session.Add("POCO", myPOCO);
             POCOTemplate.Initialize();
+
             //print to file
             string output = POCOTemplate.TransformText();
-            output = output.Replace("\r\n", "\n");
-            output = output.Replace("\n", Environment.NewLine);
+            //output = output.Replace("\r\n", "\n");
+            //output = output.Replace("\n", "\r\n");
             System.IO.File.WriteAllText(@"..\..\output\" + Table.Text + ".cs", output);
 
             button1.Text = myPOCODS.Tables[0].Rows.Count.ToString();

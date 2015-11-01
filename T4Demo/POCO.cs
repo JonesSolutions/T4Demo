@@ -8,10 +8,11 @@ namespace T4Demo
 {
     class POCO
     {
+        #region Variables
 
         private string className;
         private List<Property> properties;
-        
+        #endregion
         public List<Property> Properties
         {
             get { return properties; }
@@ -28,6 +29,7 @@ namespace T4Demo
         {
             private string propertyName;
             private string propertyType;
+            private bool nullable;
 
             public string PropertyType
             {
@@ -40,6 +42,13 @@ namespace T4Demo
                 get { return propertyName; }
                 set { propertyName = value; }
             }
+
+            public bool Nullable
+            {
+                get { return nullable; }
+                set { nullable = value; }
+            }
+
         }
     }
 }
