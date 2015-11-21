@@ -18,38 +18,54 @@ namespace T4Demo
             InitializeComponent();
         }
 
+
         private void button1_Click(object sender, EventArgs e)
         {
             string sqlConString;
             string sqlString;
             SqlCommand sqlCommand;
 
-            sqlConString = String.Format("Server={0};Database={1};User Id={2};Password = {3};", Server.Text,
-                Database.Text, Username.Text, Password.Text);
+            // sqlConString = String.Format("Server={0};Database={1};User Id={2};Password = {3};", Server.Text,
+             //   Database.Text, Username.Text, Password.Text);
+            //sqlConString = String.Format("Server={0}; Database={1}; Integrated Security=true;", this.Server.Text.Trim(), this.Database.Text.Trim());
+
+            sqlConString = this.createSqlConnectionStringFromUi();
 
             SqlConnection sqlConn = new SqlConnection(sqlConString);
 
-            sqlString = "Select " +
-                        "     clmns.name PropertyName, " +
-                        "     baset.name PropertyType, " +
-                        "     tbl.Name    ClassName, " +
-                        "     clmns.is_nullable Nullable " +
-                        "FROM " +
-                        "     sys.tables AS tbl " +
-                        "INNER JOIN sys.all_columns AS clmns " +
-                        "    ON clmns.object_id = tbl.object_id " +
-                        "LEFT OUTER JOIN sys.types AS baset " +
-                        "    ON (baset.user_type_id = clmns.system_type_id " +
-                        "        and baset.user_type_id = baset.system_type_id)  " +
-                        "            or((baset.system_type_id = clmns.system_type_id) " +
-                        "                 and(baset.user_type_id = clmns.user_type_id) " +
-                        "                 and(baset.is_user_defined = 0) " +
-                        "                and(baset.is_assembly_type = 1)) " +
-                        "Where tbl.name = '{0}'";
+            sqlString = @"SELECT
+	                         C.[name] AS PropertyName
+	                        , EP.value AS PropertyComment
+	                        , I.DATA_TYPE AS PropertyType
+	                        , T.[name] AS ClassName
+	                        , C.is_nullable AS Nullable
+	
+                        FROM sys.tables AS T	
+	                        INNER JOIN sys.schemas AS S 
+		                        ON ( T.schema_id = S.schema_id )
+	                        INNER JOIN sys.columns AS C
+		                        ON ( T.object_id = C.object_id )
+	                        INNER JOIN sys.types AS Y
+		                        ON ( Y.user_type_id  = C.user_type_id )
+	                        INNER JOIN INFORMATION_SCHEMA.COLUMNS AS I
+		                        ON ( I.TABLE_SCHEMA = S.[name] AND I.TABLE_NAME = T.[name] AND I.COLUMN_NAME = C.[name] )
+	                        LEFT OUTER JOIN sys.extended_properties AS EP
+		                        ON ( EP.class = 1 AND EP.major_id = C.object_id AND EP.minor_id = C.column_id AND EP.name = 'MS_Description' )
 
-            sqlString = String.Format(sqlString, Table.Text);
+                        WHERE T.[name] = @tableName
+	                        AND S.[name] = @schemaName
+
+                        ORDER BY C.column_id, C.name;";
+
+          
+ 
+            
 
             sqlCommand = new SqlCommand(sqlString, sqlConn);
+            sqlCommand.Parameters.AddWithValue("@tableName", this.Table.Text.Trim());
+            sqlCommand.Parameters.AddWithValue("@schemaName", this.Schema.Text.Trim());
+
+            
 
             SqlDataAdapter sqlAdapter = new SqlDataAdapter(sqlCommand );
             DataSet myPOCODS = new DataSet();
@@ -64,6 +80,7 @@ namespace T4Demo
                 myProperty.PropertyName = row["PropertyName"].ToString();
                 myProperty.PropertyType = row["PropertyType"].ToString();
                 myProperty.Nullable = Convert.ToBoolean(row["Nullable"]);
+                myProperty.PropertyComment = row["PropertyComment"].ToString();
                 myProperties.Add(myProperty);
             }
             myPOCO.Properties = myProperties;
@@ -81,6 +98,32 @@ namespace T4Demo
 
             button1.Text = myPOCODS.Tables[0].Rows.Count.ToString();
 
+        }
+
+        private string createSqlConnectionStringFromUi()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+
+            builder.DataSource = this.Server.Text.Trim();
+            builder.InitialCatalog = this.Database.Text.Trim();
+
+            builder.IntegratedSecurity = this.UseIntegratedAuthentication.Checked;
+
+            if (!builder.IntegratedSecurity)
+            {
+                builder.UserID = this.Username.Text.Trim();
+                builder.Password = this.Password.Text.Trim();
+                
+            }
+
+            return builder.ToString();
+        }
+
+        private void UseIntegratedAuthentication_CheckedChanged(object sender, EventArgs e)
+        {
+            //toggle enabling of Username and Password entry as checkbox to Use Integrated Authentication is changed
+            this.Username.Enabled = !this.UseIntegratedAuthentication.Checked;
+            this.Password.Enabled = !this.UseIntegratedAuthentication.Checked;
         }
 
 
