@@ -41,11 +41,12 @@
             this.label6 = new System.Windows.Forms.Label();
             this.Schema = new System.Windows.Forms.TextBox();
             this.Table = new System.Windows.Forms.TextBox();
+            this.UseIntegratedAuthentication = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(22, 169);
+            this.button1.Location = new System.Drawing.Point(22, 216);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(105, 23);
             this.button1.TabIndex = 0;
@@ -67,7 +68,7 @@
             this.Server.Location = new System.Drawing.Point(85, 12);
             this.Server.Name = "Server";
             this.Server.Size = new System.Drawing.Size(198, 20);
-            this.Server.TabIndex = 2;
+            this.Server.TabIndex = 1;
             this.Server.Text = "OGEDEISPC\\SQLEXPRESS";
             // 
             // label2
@@ -84,13 +85,13 @@
             this.Database.Location = new System.Drawing.Point(85, 36);
             this.Database.Name = "Database";
             this.Database.Size = new System.Drawing.Size(198, 20);
-            this.Database.TabIndex = 4;
+            this.Database.TabIndex = 2;
             this.Database.Text = "AdventureWorksDW";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 68);
+            this.label3.Location = new System.Drawing.Point(19, 87);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(57, 13);
             this.label3.TabIndex = 5;
@@ -98,16 +99,16 @@
             // 
             // Username
             // 
-            this.Username.Location = new System.Drawing.Point(85, 61);
+            this.Username.Location = new System.Drawing.Point(85, 80);
             this.Username.Name = "Username";
             this.Username.Size = new System.Drawing.Size(198, 20);
-            this.Username.TabIndex = 6;
+            this.Username.TabIndex = 4;
             this.Username.Text = "Demo";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 92);
+            this.label4.Location = new System.Drawing.Point(19, 111);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(53, 13);
             this.label4.TabIndex = 7;
@@ -115,17 +116,17 @@
             // 
             // Password
             // 
-            this.Password.Location = new System.Drawing.Point(85, 85);
+            this.Password.Location = new System.Drawing.Point(85, 104);
             this.Password.Name = "Password";
             this.Password.PasswordChar = '*';
             this.Password.Size = new System.Drawing.Size(198, 20);
-            this.Password.TabIndex = 8;
+            this.Password.TabIndex = 5;
             this.Password.Text = "P@ssword";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 134);
+            this.label5.Location = new System.Drawing.Point(19, 159);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 9;
@@ -134,7 +135,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 111);
+            this.label6.Location = new System.Drawing.Point(19, 136);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
             this.label6.TabIndex = 10;
@@ -142,25 +143,37 @@
             // 
             // Schema
             // 
-            this.Schema.Location = new System.Drawing.Point(85, 108);
+            this.Schema.Location = new System.Drawing.Point(85, 133);
             this.Schema.Name = "Schema";
             this.Schema.Size = new System.Drawing.Size(198, 20);
-            this.Schema.TabIndex = 11;
+            this.Schema.TabIndex = 6;
             this.Schema.Text = "dbo";
             // 
             // Table
             // 
-            this.Table.Location = new System.Drawing.Point(85, 131);
+            this.Table.Location = new System.Drawing.Point(85, 156);
             this.Table.Name = "Table";
             this.Table.Size = new System.Drawing.Size(198, 20);
-            this.Table.TabIndex = 12;
+            this.Table.TabIndex = 7;
             this.Table.Text = "DimAccount";
+            // 
+            // UseIntegratedAuthentication
+            // 
+            this.UseIntegratedAuthentication.AutoSize = true;
+            this.UseIntegratedAuthentication.Location = new System.Drawing.Point(22, 62);
+            this.UseIntegratedAuthentication.Name = "UseIntegratedAuthentication";
+            this.UseIntegratedAuthentication.Size = new System.Drawing.Size(167, 17);
+            this.UseIntegratedAuthentication.TabIndex = 3;
+            this.UseIntegratedAuthentication.Text = "Use Integrated Authentication";
+            this.UseIntegratedAuthentication.UseVisualStyleBackColor = true;
+            this.UseIntegratedAuthentication.CheckedChanged += new System.EventHandler(this.UseIntegratedAuthentication_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.UseIntegratedAuthentication);
             this.Controls.Add(this.Table);
             this.Controls.Add(this.Schema);
             this.Controls.Add(this.label6);
@@ -196,6 +209,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox Schema;
         private System.Windows.Forms.TextBox Table;
+        private System.Windows.Forms.CheckBox UseIntegratedAuthentication;
     }
 }
 
